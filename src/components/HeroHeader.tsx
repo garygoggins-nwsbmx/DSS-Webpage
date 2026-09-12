@@ -1,17 +1,14 @@
 import React from 'react';
 import { 
   ArrowRight, 
-  ExternalLink, 
   FileText, 
   MapPin, 
-  Layers, 
   Bell, 
-  ChevronRight,
-  Sparkles
+  ChevronRight
 } from 'lucide-react';
 
 interface Props {
-  onOpenEsriGuide: () => void;
+  onOpenEsriGuide?: () => void;
 }
 
 export const HeroHeader: React.FC<Props> = ({ onOpenEsriGuide }) => {
@@ -32,14 +29,6 @@ export const HeroHeader: React.FC<Props> = ({ onOpenEsriGuide }) => {
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={onOpenEsriGuide}
-              className="bg-slate-900/90 hover:bg-slate-900 text-amber-300 text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer hover:-translate-y-0.5"
-              title="View Experience Builder vs Hub and Automation recommendations"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>ESRI Migration Guide</span>
-            </button>
             <a
               href="https://partnerservices.nws.noaa.gov/registration?code=59QRADUF"
               target="_blank"
@@ -81,9 +70,6 @@ export const HeroHeader: React.FC<Props> = ({ onOpenEsriGuide }) => {
                   </span>
                   <span className="text-[11px] font-bold text-slate-300 bg-white/10 px-2.5 py-0.5 rounded-md backdrop-blur-xs">
                     Core Partner Portal
-                  </span>
-                  <span className="text-[11px] font-bold text-emerald-300 bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-400/30">
-                    ArcGIS Ready
                   </span>
                 </div>
 

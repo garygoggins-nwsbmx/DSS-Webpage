@@ -1,6 +1,10 @@
 {
   "name": "NWS Alabama Statewide DSS Portal",
   "description": "Decision Support Services (DSS) weather portal for Alabama emergency managers and partners, featuring live hazard alerts, current observations, forecaster key messages, radar switcher, briefing slides, and comprehensive hazard graphics with ESRI ArcGIS migration architecture.",
-  "requestFramePermissions": ["geolocation"],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
