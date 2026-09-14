@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GRAPHICS_TABS } from '../data/weatherData';
 import { GraphicsTabId } from '../types';
 import { TropicalOutlookSection } from './TropicalOutlookSection';
@@ -11,6 +11,47 @@ interface Props {
 
 export const GraphicsDashboard: React.FC<Props> = ({ onOpenLightbox, onOpenLightboxLayers }) => {
   const [activeTab, setActiveTab] = useState<GraphicsTabId>('tab-severe');
+
+  // Track detection of 1x1 white dot placeholder images (NWS blank placeholder when no severe graphics are issued)
+  const [severeImagesDotStatus, setSevereImagesDotStatus] = useState<Record<number, boolean>>({});
+
+  const detectWhiteDot = useCallback((img: HTMLImageElement, day: number) => {
+    if (img.naturalWidth === 1 && img.naturalHeight === 1) {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          const pixel = ctx.getImageData(0, 0, 1, 1).data;
+          // Check if pixel is white or transparent
+          const isWhiteOrBlank =
+            (pixel[0] >= 240 && pixel[1] >= 240 && pixel[2] >= 240) || pixel[3] === 0;
+          setSevereImagesDotStatus((prev) => (prev[day] === isWhiteOrBlank ? prev : { ...prev, [day]: isWhiteOrBlank }));
+          return;
+        }
+      } catch {
+        // Fallback for canvas security error
+        setSevereImagesDotStatus((prev) => (prev[day] ? prev : { ...prev, [day]: true }));
+        return;
+      }
+      setSevereImagesDotStatus((prev) => (prev[day] ? prev : { ...prev, [day]: true }));
+    } else if (img.naturalWidth > 1 && img.naturalHeight > 1) {
+      setSevereImagesDotStatus((prev) => (prev[day] === false ? prev : { ...prev, [day]: false }));
+    }
+  }, []);
+
+  useEffect(() => {
+    [1, 2, 3].forEach((day) => {
+      const testImg = new Image();
+      testImg.crossOrigin = 'anonymous';
+      testImg.onload = () => {
+        detectWhiteDot(testImg, day);
+      };
+      testImg.src = `https://www.weather.gov/images/bmx/DSS/SevereAL${day}.png`;
+    });
+  }, [detectWhiteDot]);
 
   const groups = ['Hazard Outlooks', 'National Overviews', 'Forecast Elements', 'CPC Climate & Extended'] as const;
 
@@ -90,7 +131,7 @@ export const GraphicsDashboard: React.FC<Props> = ({ onOpenLightbox, onOpenLight
   };
 
   return (
-    <section className="bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden max-w-[98%] mx-auto mb-8" id="statewidegraphics">
+    <section className="bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden max-w-[98%] mx-auto mb-8 scroll-mt-16 sm:scroll-mt-20" id="statewidegraphics">
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 px-6 py-5 border-b border-sky-400/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-white">
         <div className="flex items-center gap-4">
@@ -194,26 +235,51 @@ export const GraphicsDashboard: React.FC<Props> = ({ onOpenLightbox, onOpenLight
               <div className="flex flex-wrap justify-center gap-6 w-full mb-6">
                 {[1, 2, 3].map((day) => {
                   const url = `https://www.weather.gov/images/bmx/DSS/SevereAL${day}.png`;
+                  const isWhiteDot = !!severeImagesDotStatus[day];
                   return (
-                    <div key={day} className="w-full md:flex-1 max-w-xl text-center group">
+                    <div
+                      key={day}
+                      style={isWhiteDot ? { display: 'none' } : undefined}
+                      className={`w-full md:flex-1 max-w-xl text-center group ${isWhiteDot ? 'hidden' : ''}`}
+                    >
                       <div
                         onClick={() => onOpenLightbox(url, `Day ${day} Severe Weather Impacts`)}
                         className="cursor-zoom-in"
+                        style={isWhiteDot ? { display: 'none' } : undefined}
                       >
                         <img
                           src={url}
                           alt={`Day ${day} Severe Impacts`}
-                          className="w-full h-auto rounded-xl shadow-sm border border-slate-200 transition-all duration-200 group-hover:border-sky-500 group-hover:shadow-md"
+                          crossOrigin="anonymous"
+                          ref={(el) => {
+                            if (el && el.complete && el.naturalWidth > 0) {
+                              detectWhiteDot(el, day);
+                            }
+                          }}
+                          onLoad={(e) => {
+                            detectWhiteDot(e.currentTarget, day);
+                          }}
+                          style={isWhiteDot ? { display: 'none' } : undefined}
+                          className={`w-full h-auto rounded-xl shadow-sm border border-slate-200 transition-all duration-200 group-hover:border-sky-500 group-hover:shadow-md ${
+                            isWhiteDot ? 'hidden' : ''
+                          }`}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = `https://placehold.co/800x600/002B49/FFFFFF?text=Day+${day}+Severe+Impacts`;
                           }}
                         />
                       </div>
-                      <p className="mt-2 text-xs font-semibold text-slate-600 m-0">Day {day} Statewide Impact</p>
+                      <p className={`mt-2 text-xs font-semibold text-slate-600 m-0 ${isWhiteDot ? 'hidden' : ''}`}>
+                        Day {day} Statewide Impact
+                      </p>
                     </div>
                   );
                 })}
+                {[1, 2, 3].every((d) => severeImagesDotStatus[d]) && (
+                  <div className="w-full text-center py-6 bg-slate-50 rounded-2xl border border-slate-200 text-slate-500 text-xs font-medium">
+                    No active Day 1–3 severe weather impact graphics currently issued by NWS Birmingham (BMX).
+                  </div>
+                )}
               </div>
 
               <h4 className="bg-slate-100 p-2.5 rounded-lg text-sm font-bold text-[#001E36] border-l-4 border-rose-600 m-0">

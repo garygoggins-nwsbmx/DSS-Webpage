@@ -1,19 +1,14 @@
 import React from 'react';
-import { Layers, Globe, ExternalLink } from 'lucide-react';
+import { Layers, ExternalLink } from 'lucide-react';
 
 export const ArcGisMapSection: React.FC = () => {
   return (
-    <section className="bg-white p-6 rounded-3xl shadow-xl border border-slate-200/80 text-center max-w-[98%] mx-auto mb-10">
+    <section 
+      id="cwa-maps"
+      className="bg-white p-4 sm:p-6 rounded-3xl shadow-xl border border-slate-200/80 text-center max-w-[98%] mx-auto mb-10 scroll-mt-16 sm:scroll-mt-20"
+    >
       <div className="flex flex-col items-center justify-center mb-4">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-black uppercase tracking-wider bg-sky-100 text-sky-800 border border-sky-200 px-2.5 py-0.5 rounded-md flex items-center gap-1">
-            <Globe className="w-3 h-3" /> ESRI ArcGIS Infrastructure Item
-          </span>
-          <span className="text-[10px] font-mono-code text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-            webmap: cc1f04072b884c98af91f8184d9fd370
-          </span>
-        </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight m-0">
+        <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight m-0">
           Alabama NWS County Warning Areas &amp; Offices
         </h2>
         <p className="text-slate-500 text-xs sm:text-sm mt-1 max-w-xl font-medium m-0">
@@ -25,7 +20,7 @@ export const ArcGisMapSection: React.FC = () => {
         <iframe
           src="https://noaa.maps.arcgis.com/apps/Embed/index.html?webmap=cc1f04072b884c98af91f8184d9fd370&extent=-90.5,29.5,-82.5,35.5&zoom=true&previewImage=false&scale=true&search=true&searchextent=true&disable_scroll=true&theme=dark"
           title="Alabama NWS County Warning Areas & Offices"
-          className="w-full h-[550px] border-0 rounded-2xl block"
+          className="w-full h-[380px] sm:h-[550px] border-0 rounded-2xl block"
           loading="lazy"
           allowFullScreen
         />

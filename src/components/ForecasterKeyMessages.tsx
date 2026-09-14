@@ -187,7 +187,7 @@ export const ForecasterKeyMessages: React.FC<Props> = ({ onOpenLightbox }) => {
   };
 
   return (
-    <div className="bg-white border border-sky-200/90 rounded-3xl shadow-xl overflow-hidden flex flex-col transition-all duration-300 min-h-[640px] sm:min-h-[720px] lg:min-h-[780px]">
+    <div className="bg-white border border-sky-200/90 rounded-3xl shadow-xl overflow-hidden flex flex-col transition-all duration-300">
       {/* Top Header */}
       <div className="bg-gradient-to-r from-sky-950 via-slate-900 to-sky-900 text-white px-5 sm:px-6 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shrink-0">
         <div className="flex items-center gap-3">
@@ -205,13 +205,13 @@ export const ForecasterKeyMessages: React.FC<Props> = ({ onOpenLightbox }) => {
         </div>
 
         {/* Office Switcher & Full AFD Link */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           <div className="flex items-center bg-slate-950/80 p-1 rounded-xl border border-white/20 text-xs font-bold gap-1 shadow-md backdrop-blur-xs">
             {(['BMX', 'HUN', 'MOB', 'TAE'] as const).map((office) => (
               <button
                 key={office}
                 onClick={() => setSelectedOffice(office)}
-                className={`px-3 py-1 rounded-lg text-xs font-extrabold transition-all duration-150 cursor-pointer ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-extrabold transition-all duration-150 cursor-pointer min-h-[36px] flex items-center justify-center ${
                   selectedOffice === office
                     ? 'bg-sky-500 text-white shadow-md border border-sky-300/40'
                     : 'text-slate-200 hover:text-white bg-white/10 hover:bg-white/20'
@@ -226,7 +226,7 @@ export const ForecasterKeyMessages: React.FC<Props> = ({ onOpenLightbox }) => {
             href={`https://forecast.weather.gov/product.php?site=${selectedOffice}&issuedby=${selectedOffice}&product=AFD&format=CI&version=1&glossary=1`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-extrabold text-slate-100 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 px-3 py-1.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5 no-underline backdrop-blur-xs shrink-0 cursor-pointer"
+            className="text-xs font-extrabold text-slate-100 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 px-3 py-1.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5 no-underline backdrop-blur-xs shrink-0 cursor-pointer min-h-[36px]"
           >
             <span>Full AFD</span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-300" />

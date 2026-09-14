@@ -28,3 +28,42 @@
 .font-mono-code {
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* Remove fade-in effect on map tiles and layers for instantaneous, seamless radar looping */
+.leaflet-tile {
+  transition: none !important;
+  animation: none !important;
+  -webkit-transition: none !important;
+}
+
+.leaflet-tile-container img {
+  transition: none !important;
+  animation: none !important;
+  -webkit-transition: none !important;
+}
+
+.leaflet-fade-anim .leaflet-tile {
+  transition: none !important;
+  animation: none !important;
+}
+
+.leaflet-fade-anim .leaflet-map-pane .leaflet-tile {
+  transition: none !important;
+  animation: none !important;
+}
+
+.leaflet-fade-anim .leaflet-map-pane .leaflet-tile-loaded {
+  transition: none !important;
+  animation: none !important;
+}
+
+.leaflet-layer {
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+.mrms-radar-tile {
+  transition: none !important;
+  animation: none !important;
+  -webkit-transition: none !important;
+}

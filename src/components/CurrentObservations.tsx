@@ -204,7 +204,7 @@ export const CurrentObservations: React.FC = () => {
   }, []);
 
   return (
-    <section className="max-w-[98%] mx-auto mb-6">
+    <section id="observations" className="max-w-[98%] mx-auto mb-6 scroll-mt-16 sm:scroll-mt-20">
       <div className="bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden flex flex-col transition-all duration-300">
         {/* Header Bar */}
         <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-white">
